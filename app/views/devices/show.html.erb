@@ -1,0 +1,150 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @device.name %>
+</p>
+
+<%= link_to 'Edit', edit_device_path(@device) %> |
+<%= link_to 'Back', devices_path %>
+
+<!-- Styles -->
+<style>
+#chartdiv {
+	width	: 100%;
+	height	: 500px;
+}																	
+</style>
+
+<!-- Resources -->
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+
+<!-- <script src="amcharts.js"></script>
+<script src="serial.js"></script>
+<script src="export.min.js"></script>
+<link rel="stylesheet" href="export.css" type="text/css" media="all" />
+<script src="light.js"></script>  -->
+
+<!-- Chart code -->
+<script>
+var chartData = getChartData();
+var chart = AmCharts.makeChart("chartdiv", {
+    "type": "serial",
+    "theme": "light",
+    "marginRight": 80,
+    "autoMarginOffset": 20,
+    "marginTop": 7,
+    "dataProvider": chartData,
+    "valueAxes": [{
+        "axisAlpha": 0.2,
+        "dashLength": 1,
+        "position": "left"
+    }],
+    "mouseWheelZoomEnabled": true,
+    "graphs": [{
+        "id": "g1",
+        "balloonText": "[[value]]",
+        "bullet": "round",
+        "bulletBorderAlpha": 1,
+        "bulletColor": "#FFFFFF",
+        "hideBulletsCount": 50,
+        "title": "red line",
+        "valueField": "measure",
+        "useLineColorForBulletBorder": true,
+        "balloon":{
+            "drop":true
+        }
+    }],
+    "chartScrollbar": {
+        "autoGridCount": true,
+        "graph": "g1",
+        "scrollbarHeight": 40
+    },
+    "chartCursor": {
+        "categoryBalloonDateFormat": "YYYY MMM D JJ:NN:SS",
+        "limitToGraph":"g1"
+    },
+    "categoryField": "date",
+    "categoryAxis": {
+   		"minPeriod": "ss",
+   		/*"dateFormats": [{period:'fff',format:'JJ:NN:SS'},
+						{period:'ss',format:'JJ:NN:SS'},
+						{period:'mm',format:'JJ:NN'},
+						{period:'hh',format:'JJ:NN'},
+						{period:'DD',format:'MMM DD'},
+						{period:'WW',format:'MMM DD'},
+						{period:'MM',format:'MMM'},
+						{period:'YYYY',format:'YYYY'}],/**/
+    	"equalSpacing": false,
+        "parseDates": true,
+        "axisColor": "#DADADA",
+        "dashLength": 1,
+        "minorGridEnabled": true
+    },
+    "export": {
+        "enabled": true
+    },
+    "dataDateFormat": "YYYY MMM D JJ:NN:SS"
+});
+
+chart.addListener("rendered", zoomChart);
+zoomChart();
+
+// this method is called when chart is first inited as we listen for "rendered" event
+function zoomChart() {
+    // different zoom methods can be used - zoomToIndexes, zoomToDates, zoomToCategoryValues
+    chart.zoomToIndexes(chartData.length - 40, chartData.length - 1);
+}
+
+// generate some random data, quite different range
+function generateRandomChartData() {
+    var chartData = [];
+    var firstDate = new Date();
+    firstDate.setDate(firstDate.getDate() - 5);
+    var measure = 1200;
+    for (var i = 0; i < 1000; i++) {
+        // we create date objects here. In your data, you can have date strings
+        // and then set format of your dates using chart.dataDateFormat property,
+        // however when possible, use date objects, as this will speed up chart rendering.
+        var newDate = new Date(firstDate);
+        newDate.setDate(newDate.getDate() + i);
+        
+        measure += Math.round((Math.random()<0.5?1:-1)*Math.random()*10);
+
+        chartData.push({
+            date: newDate,
+            measure: measure,
+        });
+    }
+    return chartData;
+}
+
+//Get all the existing measures for the device
+function getChartData(){
+	var chartData = [];
+	for( i = 0; i < gon.your_variable.length; ++i ){
+		chartData.push({
+			date: new Date( gon.your_variable[ i ].time ),
+			measure: gon.your_variable[ i ].measure
+		});
+	}
+	
+	/*chartData.push({
+            date: new Date(),
+            measure: 10.5,
+    });
+    chartData.push({
+            date: new Date(),
+            measure: 10.5,
+    });*/
+	return chartData;
+}
+
+</script>
+
+<!-- HTML -->
+<div id="chartdiv"></div>

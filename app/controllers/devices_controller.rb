@@ -5,6 +5,7 @@ class DevicesController < ApplicationController
   # GET /devices.json
   def index
     @devices = Device.all
+    render json: @devices
   end
 
   # GET /devices/1
@@ -12,6 +13,7 @@ class DevicesController < ApplicationController
   def show
     @irr_measures = Device.find( params[:id] ).irradiance_measures.select('time, measure')
     gon.your_variable = @irr_measures
+    render json: @irr_measures
   end
 
   # GET /devices/new

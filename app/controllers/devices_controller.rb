@@ -25,6 +25,33 @@ class DevicesController < ApplicationController
   def edit
   end
 
+  #GET /devices/1/get_statistics?start=2017-03-28+04%3A00%3A00&end=2017-03-28+04%3A00%3A00
+  def get_statistics
+    @irr_measures = Device.find( params[:id] ).irradiance_measures.where( "time BETWEEN ? AND ?", params[:start], params[:end] ).select('time, measure')
+    integral = minVal = maxVal = avg = nil
+    maxSecondsDiff = 3600.0
+    if @irr_measures.size > 0
+      integral = avg = 0.0
+      lastX = @irr_measures[ 0 ].time
+      lastY = minVal = maxVal = @irr_measures[ 0 ].measure
+      
+      @irr_measures.each do |record|
+        elapsed_seconds = (record.time - lastX).to_f
+        if elapsed_seconds < maxSecondsDiff then
+          integral += elapsed_seconds * (record.measure + lastY)/2.0;
+        end
+        minVal = [minVal, record.measure].min
+        maxVal = [maxVal, record.measure].max
+        avg += record.measure
+        lastX = record.time
+        lastY = record.measure
+      end
+
+      avg /= @irr_measures.size.to_f
+    end
+    render json: {integral: integral, min: minVal, max: maxVal, average: avg}
+  end
+
   # POST /devices
   # POST /devices.json
   def create

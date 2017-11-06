@@ -1,5 +1,6 @@
 class IrradianceMeasuresController < ApplicationController
   before_action :set_irradiance_measure, only: [:show, :edit, :update, :destroy]
+  skip_before_action :verify_authenticity_token
 
   # GET /irradiance_measures
   # GET /irradiance_measures.json
@@ -68,7 +69,11 @@ class IrradianceMeasuresController < ApplicationController
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
+    #def irradiance_measure_params
+    #  params.fetch(:irradiance_measure, {})
+    #end
+
     def irradiance_measure_params
-      params.fetch(:irradiance_measure, {})
+      params.require(:irradiance_measure).permit(:time, :measure, :device_id)
     end
 end

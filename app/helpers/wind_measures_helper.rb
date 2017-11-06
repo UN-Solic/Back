@@ -1,0 +1,2 @@
+module WindMeasuresHelper
+end

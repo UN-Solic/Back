@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Time:</strong>
+  <%= @wind_measure.time %>
+</p>
+
+<p>
+  <strong>Measure:</strong>
+  <%= @wind_measure.measure %>
+</p>
+
+<p>
+  <strong>Device:</strong>
+  <%= @wind_measure.device %>
+</p>
+
+<%= link_to 'Edit', edit_wind_measure_path(@wind_measure) %> |
+<%= link_to 'Back', wind_measures_path %>

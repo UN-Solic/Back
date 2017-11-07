@@ -1,0 +1,32 @@
+<%= form_with(model: wind_measure, local: true) do |form| %>
+  <% if wind_measure.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(wind_measure.errors.count, "error") %> prohibited this wind_measure from being saved:</h2>
+
+      <ul>
+      <% wind_measure.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :time %>
+    <%= form.datetime_select :time, id: :wind_measure_time %>
+  </div>
+
+  <div class="field">
+    <%= form.label :measure %>
+    <%= form.text_field :measure, id: :wind_measure_measure %>
+  </div>
+
+  <div class="field">
+    <%= form.label :device_id %>
+    <%= form.text_field :device_id, id: :wind_measure_device_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Time:</strong>
+  <%= @temp_measure.time %>
+</p>
+
+<p>
+  <strong>Measure:</strong>
+  <%= @temp_measure.measure %>
+</p>
+
+<p>
+  <strong>Device:</strong>
+  <%= @temp_measure.device %>
+</p>
+
+<%= link_to 'Edit', edit_temp_measure_path(@temp_measure) %> |
+<%= link_to 'Back', temp_measures_path %>

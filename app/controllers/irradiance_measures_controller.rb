@@ -1,10 +1,13 @@
 class IrradianceMeasuresController < ApplicationController
   before_action :set_irradiance_measure, only: [:show, :edit, :update, :destroy]
 
+
   # GET /irradiance_measures
   # GET /irradiance_measures.json
   def index
-    @irradiance_measures = IrradianceMeasure.all
+    @irradiance_measures = IrradianceMeasure.all.select(:time,:measure)
+    #@irradiance_measures = IrradianceMeasure.all.pluck(:time,:measure)
+    render json:@irradiance_measures.to_json(:only =>[:time,:measure])
   end
 
   # GET /irradiance_measures/1

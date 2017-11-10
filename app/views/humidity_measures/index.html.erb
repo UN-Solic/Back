@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Humidity Measures</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Time</th>
+      <th>Measure</th>
+      <th>Device</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @humidity_measures.each do |humidity_measure| %>
+      <tr>
+        <td><%= humidity_measure.time %></td>
+        <td><%= humidity_measure.measure %></td>
+        <td><%= humidity_measure.device %></td>
+        <td><%= link_to 'Show', humidity_measure %></td>
+        <td><%= link_to 'Edit', edit_humidity_measure_path(humidity_measure) %></td>
+        <td><%= link_to 'Destroy', humidity_measure, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Humidity Measure', new_humidity_measure_path %>

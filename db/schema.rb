@@ -10,12 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171106145340) do
+ActiveRecord::Schema.define(version: 20171110203142) do
 
   create_table "devices", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "humidity_measures", force: :cascade do |t|
+    t.datetime "time"
+    t.float "measure"
+    t.integer "device_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["device_id"], name: "index_humidity_measures_on_device_id"
   end
 
   create_table "irradiance_measures", force: :cascade do |t|
